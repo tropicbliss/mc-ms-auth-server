@@ -33,7 +33,6 @@ error_codes = {
 @app.get("/auth", response_class=HTMLResponse)
 async def index(request: Request):
     print(f"[{datetime.now()}] [INFO] Served deprecation notice to user.")
-    return JSONResponse(status_code=400, content={"error": error_codes[6]})
     return templates.TemplateResponse("notice.html", {"request": request})
 
 
