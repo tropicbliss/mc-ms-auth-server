@@ -1,7 +1,8 @@
-from fastapi import FastAPI, HTTPException, Request
+from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 from datetime import datetime
 import msmcauth
@@ -24,7 +25,7 @@ error_codes = {
     3: "This Microsoft account is a child account and cannot proceed unless added to a family account by an adult.",
     4: "The SimpleAuth endpoint cannot authenticate Microsoft accounts with 2FA. Would you please disable 2FA to enable authentication with this account?",
     5: "Credentials error. Would you please check if you have entered your username and password correctly?",
-    6: "Try to sign in to https://account.live.com/activity or https://account.xbox.com/profile from your browser. As this API is hosted in the United States, Microsoft may block authentication for users who do not live in the US due to Microsoft thinking that you are \"logging in from an unknown location.\"",
+    6: "Try to sign in to https://account.live.com/activity or https://account.xbox.com/profile from your browser. As this API is hosted in the United States, Microsoft may block authentication for users who do not live in the US due to Microsoft thinking that you are 'logging in from an unknown location.'",
     7: "This API is currently overloaded. Please try again later."
 }
 
@@ -32,6 +33,7 @@ error_codes = {
 @app.get("/auth", response_class=HTMLResponse)
 async def index(request: Request):
     print(f"[{datetime.now()}] [INFO] Served deprecation notice to user.")
+    return JSONResponse(status_code=400, content={"error": error_codes[6]})
     return templates.TemplateResponse("notice.html", {"request": request})
 
 
@@ -53,24 +55,24 @@ def simple_auth(login_info: LoginInfo):
         return {"access_token": access_token}
     except msmcauth.NoXboxAccount:
         print(f"[{datetime.now()}] [ERROR] Code: 2")
-        raise HTTPException(status_code=400, error=error_codes[2])
+        return JSONResponse(status_code=400, content={"error": error_codes[2]})
     except msmcauth.ChildAccount:
         print(f"[{datetime.now()}] [ERROR] Code: 3")
-        raise HTTPException(status_code=400, error=error_codes[3])
+        return JSONResponse(status_code=400, content={"error": error_codes[3]})
     except msmcauth.TwoFactorAccount:
         print(f"[{datetime.now()}] [ERROR] Code: 4")
-        raise HTTPException(status_code=400, error=error_codes[4])
+        return JSONResponse(status_code=400, content={"error": error_codes[4]})
     except msmcauth.InvalidCredentials:
         print(f"[{datetime.now()}] [ERROR] Code: 5")
-        raise HTTPException(status_code=400, error=error_codes[5])
+        return JSONResponse(status_code=400, content={"error": error_codes[5]})
     except msmcauth.LoginWithXboxFailed:
         print(f"[{datetime.now()}] [ERROR] Code: 7")
-        raise HTTPException(status_code=400, error=error_codes[7])
+        return JSONResponse(status_code=400, content={"error": error_codes[7]})
     except Exception as err:
         err = str(err)
         if err == "Something went wrong. Status Code: 200":
             print(f"[{datetime.now()}] [ERROR] Code: 6")
-            raise HTTPException(status_code=400, error=error_codes[6])
+            return JSONResponse(status_code=400, content={"error": error_codes[6]})
         else:
             print(f"[{datetime.now()}] [ERROR] Unknown error: {err}")
-            raise HTTPException(status_code=400, error=error_codes[1])
+            return JSONResponse(status_code=400, content={"error": error_codes[1]})
