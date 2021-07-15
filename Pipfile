@@ -1,0 +1,21 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+autopep8 = "*"
+pylint = "*"
+gunicorn = "*"
+uvicorn = "*"
+fastapi = "*"
+pydantic = "*"
+msmcauth = "*"
+requests = "*"
+aiofiles = "*"
+jinja2 = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.9"
