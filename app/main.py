@@ -12,7 +12,7 @@ from typing import Optional
 tags_metadata = [
     {
         "name": "auth",
-        "description": "Serves deprecation notice to old buckshot users as older versions of buckshot uses an OAuth2 authentication endpoint that is no longer working. As a developer, you should not care about this as this endpoint is specific to buckshot only.",
+        "description": "Serves deprecation notice to old buckshot users as older versions of buckshot uses an OAuth2 authentication endpoint that is no longer working. As a developer, you should not care about this as this endpoint is only specific to buckshot.",
     },
     {
         "name": "simpleauth",
