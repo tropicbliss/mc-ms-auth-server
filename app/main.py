@@ -12,16 +12,16 @@ from typing import Optional
 tags_metadata = [
     {
         "name": "auth",
-        "description": "Serves deprecation notice for old buckshot users as older versions of buckshot uses an OAuth2 authentication endpoint for SimpleAuth that is no longer working.",
+        "description": "Serves deprecation notice to old buckshot users as older versions of buckshot uses an OAuth2 authentication endpoint that is no longer working.",
     },
     {
         "name": "simpleauth",
-        "description": "Authenticates Microsoft accounts and retrieves access tokens.",
+        "description": "Authenticates Microsoft accounts and retrieves access tokens for interfacing with various Mojang APIs for Minecraft.",
     },
 ]
 
 app = FastAPI(title="SimpleAuth",
-    description="This API authenticates Microsoft accounts and retrieves bearer tokens for interfacing with Mojang APIs for Minecraft.",
+    description="This API authenticates Microsoft accounts and retrieves bearer tokens for interfacing with various Mojang APIs for Minecraft.",
     version="1.0.0", docs_url=None, redoc_url="/", openapi_tags=tags_metadata)
 app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
