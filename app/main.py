@@ -16,12 +16,12 @@ tags_metadata = [
     },
     {
         "name": "simpleauth",
-        "description": "Authenticates Microsoft accounts and retrieves access tokens for interfacing with Mojang APIs for Minecraft.",
+        "description": "Authenticates Microsoft accounts and retrieves a bearer token for interfacing with Mojang APIs for Minecraft.",
     },
 ]
 
 app = FastAPI(title="SimpleAuth",
-    description="This API authenticates Microsoft accounts and retrieves bearer tokens for interfacing with Mojang APIs for Minecraft.",
+    description="This API authenticates Microsoft accounts and retrieves a bearer token for interfacing with Mojang APIs for Minecraft.",
     version="1.0.0", docs_url=None, redoc_url="/", openapi_tags=tags_metadata)
 app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
