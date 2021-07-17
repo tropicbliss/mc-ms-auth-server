@@ -9,20 +9,7 @@ import msmcauth
 import requests
 from typing import Optional
 
-tags_metadata = [
-    {
-        "name": "auth",
-        "description": "Serves deprecation notice to old buckshot users as older versions of buckshot uses an OAuth2 authentication endpoint that is no longer working. As a developer, you should not care about this as this endpoint is only specific to buckshot.",
-    },
-    {
-        "name": "simpleauth",
-        "description": "Authenticates Microsoft accounts and retrieves a bearer token for interfacing with Mojang APIs for Minecraft.",
-    },
-]
-
-app = FastAPI(title="SimpleAuth",
-    description="This API authenticates Microsoft accounts and retrieves a bearer token for interfacing with Mojang APIs for Minecraft.",
-    version="1.0.0", docs_url=None, redoc_url="/", openapi_tags=tags_metadata)
+app = FastAPI(openapi_url=None)
 app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 
@@ -43,13 +30,13 @@ error_codes = {
 }
 
 
-@app.get("/auth", response_class=HTMLResponse, tags=["auth"])
+@app.get("/auth", response_class=HTMLResponse)
 async def index(request: Request):
     print(f"[{datetime.now()}] [INFO] Served deprecation notice to user.")
     return templates.TemplateResponse("notice.html", {"request": request})
 
 
-@app.post("/simpleauth", tags=["simpleauth"])
+@app.post("/simpleauth")
 def simple_auth(login_info: LoginInfo):
     try:
         username = login_info.username
